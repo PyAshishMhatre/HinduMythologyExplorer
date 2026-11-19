@@ -1,0 +1,151 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --c-night: 11 16 38;
+  --c-ink: 7 10 26;
+  --c-panel: 20 24 44;
+  --c-parchment: 239 228 204;
+  --c-muted: 166 160 185;
+  --c-gold: 201 162 74;
+  --c-saffron: 224 138 46;
+  --c-bronze: 160 104 47;
+  --c-vermilion: 196 77 58;
+  --c-lapis: 108 132 230;
+  --c-jade: 95 179 161;
+  color-scheme: dark;
+}
+
+:root[data-theme='parchment'] {
+  --c-night: 244 236 218;
+  --c-ink: 250 245 232;
+  --c-panel: 236 225 200;
+  --c-parchment: 42 32 22;
+  --c-muted: 110 95 80;
+  --c-gold: 150 108 28;
+  --c-saffron: 190 100 20;
+  --c-bronze: 130 80 30;
+  --c-vermilion: 165 55 40;
+  --c-lapis: 60 80 170;
+  --c-jade: 40 120 105;
+  color-scheme: light;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  @apply bg-night text-parchment font-sans antialiased;
+  background-image:
+    radial-gradient(1200px 600px at 80% -10%, rgb(var(--c-lapis) / 0.12), transparent 60%),
+    radial-gradient(900px 500px at -10% 110%, rgb(var(--c-saffron) / 0.08), transparent 60%);
+  background-attachment: fixed;
+}
+
+:root:not([data-theme='parchment']) body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+  background-image:
+    radial-gradient(1px 1px at 20px 30px, rgb(255 255 255 / 0.5), transparent),
+    radial-gradient(1px 1px at 120px 80px, rgb(255 255 255 / 0.35), transparent),
+    radial-gradient(1.5px 1.5px at 200px 160px, rgb(var(--c-gold) / 0.6), transparent),
+    radial-gradient(1px 1px at 300px 20px, rgb(255 255 255 / 0.3), transparent),
+    radial-gradient(1px 1px at 360px 220px, rgb(255 255 255 / 0.4), transparent);
+  background-size: 400px 260px;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  @apply font-serif;
+  letter-spacing: 0.01em;
+}
+
+::selection {
+  background: rgb(var(--c-gold) / 0.35);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgb(var(--c-gold) / 0.3) transparent;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-gold/15 bg-panel/70 backdrop-blur-sm transition duration-300;
+  }
+  .card-hover {
+    @apply hover:border-gold/45 hover:shadow-glow hover:-translate-y-0.5;
+  }
+  .btn {
+    @apply inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/60;
+  }
+  .btn-primary {
+    @apply btn bg-gradient-to-r from-gold to-saffron text-ink hover:brightness-110;
+  }
+  .btn-ghost {
+    @apply btn border border-gold/30 text-parchment hover:bg-gold/10;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border border-gold/20 bg-gold/5 px-2.5 py-0.5 text-xs text-parchment/80;
+  }
+  .chip-active {
+    @apply border-gold/70 bg-gold/20 text-parchment;
+  }
+  .eyebrow {
+    @apply text-[11px] uppercase tracking-[0.25em] text-gold/80;
+  }
+  .prose-myth p {
+    @apply mb-4 leading-[1.85] text-parchment/90;
+  }
+  .prose-myth blockquote {
+    @apply my-5 border-l-2 border-gold/50 pl-4 italic text-parchment/75;
+  }
+  .link-inline {
+    @apply cursor-pointer border-b border-dotted border-gold/60 text-gold hover:border-solid hover:text-saffron;
+  }
+  .divider {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-gold/40 to-transparent;
+  }
+  .input {
+    @apply w-full rounded-xl border border-gold/20 bg-ink/60 px-4 py-2.5 text-sm text-parchment placeholder:text-muted/70 focus:border-gold/60 focus:outline-none;
+  }
+}
+
+.react-flow__attribution {
+  display: none;
+}
+.react-flow__controls button {
+  background: rgb(var(--c-panel)) !important;
+  border-color: rgb(var(--c-gold) / 0.2) !important;
+  fill: rgb(var(--c-parchment)) !important;
+}
+.react-flow__minimap {
+  background: rgb(var(--c-ink) / 0.8) !important;
+  border: 1px solid rgb(var(--c-gold) / 0.2);
+  border-radius: 12px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+.reduce-motion *,
+.reduce-motion *::before,
+.reduce-motion *::after {
+  animation-duration: 0.01ms !important;
+  transition-duration: 0.01ms !important;
+}
