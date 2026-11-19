@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Layout from './Layout';
 import { useSettings } from '../store/settings';
 import Home from '../pages/Home';
+import { applyMeta } from '../lib/seo';
 
 const Universe = lazy(() => import('../pages/Universe'));
 const TimelineExplorer = lazy(() => import('../pages/TimelineExplorer'));
@@ -49,6 +50,10 @@ export default function App() {
     document.documentElement.classList.toggle('reduce-motion', reduceMotion);
     document.documentElement.style.fontSize = `${16 * fontScale}px`;
   }, [theme, reduceMotion, fontScale]);
+
+  useEffect(() => {
+    applyMeta(pathname);
+  }, [pathname]);
 
   useEffect(() => {
     if (hash) {

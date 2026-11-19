@@ -2,3 +2,5 @@ node_modules
 dist
 *.tsbuildinfo
 .vite
+public/sitemap.xml
+public/robots.txt

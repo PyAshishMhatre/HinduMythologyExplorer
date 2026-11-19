@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc --noEmit && vite build",
+    "sitemap": "vite-node scripts/sitemap.ts",
+    "build": "tsc --noEmit && vite-node scripts/sitemap.ts && vite build",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
