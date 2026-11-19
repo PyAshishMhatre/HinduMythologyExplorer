@@ -20,6 +20,7 @@ import {
   timelines,
   sourceById,
 } from '../data';
+import { findConnection } from './kinship';
 
 export const SITE_URL = 'https://hindumythologyguide.com';
 export const SITE_NAME = 'Hindu Mythology Guide';
@@ -92,6 +93,20 @@ export function metaFor(pathname: string): PageMeta | null {
   if (STATIC[path]) return STATIC[path];
   const [, section, id, chapter] = path.split('/');
   switch (section) {
+    case 'relationships': {
+      const parts = (id ?? '').split('-');
+      for (let i = 1; i < parts.length; i++) {
+        const a = characterById.get(parts.slice(0, i).join('-'));
+        const b = characterById.get(parts.slice(i).join('-'));
+        if (!a || !b) continue;
+        const r = findConnection(a.id, b.id);
+        return {
+          title: `How are ${a.name} and ${b.name} related? | ${SITE_NAME}`,
+          description: r ? `${b.name} is ${a.name}’s ${r.label}. See the step-by-step family connection with sources.` : `Explore how ${a.name} and ${b.name} are connected in Hindu mythology.`,
+        };
+      }
+      return null;
+    }
     case 'characters': {
       const c = characterById.get(id);
       return c ? { title: `${c.name} – Story, Family and Sources | ${SITE_NAME}`, description: clip(`${c.title}. ${c.description}`) } : null;
@@ -146,9 +161,22 @@ export function metaFor(pathname: string): PageMeta | null {
   }
 }
 
+/** Hand-picked relationship pages worth listing in the sitemap. */
+const FEATURED_PAIRS: [string, string][] = [
+  ['arjuna', 'prahlada'],
+  ['hanuman', 'bhima'],
+  ['ravana', 'kubera'],
+  ['krishna', 'arjuna'],
+  ['karna', 'arjuna'],
+  ['rama', 'ravana'],
+  ['bhishma', 'drona'],
+  ['sita', 'draupadi'],
+].filter(([a, b]) => characterById.has(a) && characterById.has(b)) as [string, string][];
+
 /** All indexable URL paths, for the sitemap. */
 export function sitemapPaths(): string[] {
   const out = Object.entries(STATIC).filter(([, m]) => !m.noindex).map(([p]) => p);
+  out.push(...FEATURED_PAIRS.map(([a, b]) => `/relationships/${a}-${b}`));
   out.push(...characters.map((c) => `/characters/${c.id}`));
   out.push(...stories.map((s) => `/stories/${s.id}`));
   out.push(...stories.flatMap((s) => s.chapters.map((_, i) => `/stories/${s.id}/${i + 1}`)));
